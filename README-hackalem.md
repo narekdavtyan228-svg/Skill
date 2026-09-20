@@ -31,8 +31,8 @@
 
 | Схема | Регламент | Скрипт установки |
 |---|---|---|
-| **Три машины**, у каждого свой Codex и свой GitLab | `docs/setup/RUNBOOK-3-MACHINES.md` | `docs/setup/setup-machine.sh` |
-| **Одна машина**, три аккаунта Codex и три GitLab на ней | `docs/setup/RUNBOOK-1-MACHINE.md` | `docs/setup/setup-solo.sh` + `docs/setup/lane.sh` |
+| **Три машины**, у каждого свой Codex и свой GitHub | `docs/setup/RUNBOOK-3-MACHINES.md` | `docs/setup/setup-machine.sh` |
+| **Одна машина**, три аккаунта Codex и три GitHub на ней | `docs/setup/RUNBOOK-1-MACHINE.md` | `docs/setup/setup-solo.sh` + `docs/setup/lane.sh` |
 
 Для варианта с одной машиной корневой `AGENTS.md` заменяется на версию с дорожками:
 
@@ -40,7 +40,7 @@
 cp docs/setup/AGENTS-1-MACHINE.md AGENTS.md
 ```
 
-Различия только в §6 (три рабочих копии и remote-алиасы GitLab) и §11 (порты, общее железо).
+Различия только в §6 (три рабочих копии и remote-алиасы GitHub) и §11 (порты, общее железо).
 
 ---
 
@@ -48,7 +48,7 @@ cp docs/setup/AGENTS-1-MACHINE.md AGENTS.md
 
 **Накануне хакатона** (60–80 минут, не откладывать на площадку — Wi-Fi на 500 команд не выдержит установки):
 
-1. Роль A создаёт приватный проект в GitLab, добавляет двоих как Maintainer, снимает защиту с `main`, пушит этот скелет.
+1. Роль A создаёт приватный репозиторий на GitHub, добавляет двоих в Collaborators с правом Write (приглашения должны быть приняты), оставляет `main` незащищённой и пушит этот скелет.
 2. Каждый ставит ECC и окружение своим скриптом из `docs/setup/`.
 3. Все трое прогоняют репетицию на 45 минут: три сессии Codex одновременно, каждый пушит в `main`, `make smoke` зелёный.
 

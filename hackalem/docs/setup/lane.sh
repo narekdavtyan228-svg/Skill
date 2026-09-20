@@ -9,7 +9,7 @@
 #   ~/hack/lane.sh a --shell         просто оболочка в каталоге дорожки, без Codex
 #   ~/hack/lane.sh c --account a     та же дорожка, но аккаунт Codex другой (кончилась квота)
 #
-# Дорожка определяет: каталог кода, аккаунт Codex, аккаунт GitLab (через remote-алиас),
+# Дорожка определяет: каталог кода, аккаунт Codex, аккаунт GitHub (через remote-алиас),
 # порт Streamlit и метку в приглашении оболочки.
 
 set -euo pipefail
@@ -60,7 +60,7 @@ REMOTE="$(git remote get-url origin 2>/dev/null || echo '—')"
 printf '\n\033[1;44m  ДОРОЖКА %s  \033[0m  %s\n' "$UPPER" "$ROLE"
 printf '  каталог:  %s\n' "$DIR"
 printf '  Codex:    CODEX_HOME=%s\n' "$CODEX_HOME"
-printf '  GitLab:   %s  (автор коммитов: %s)\n' "$REMOTE" "$GIT_USER"
+printf '  GitHub:   %s  (автор коммитов: %s)\n' "$REMOTE" "$GIT_USER"
 printf '  Streamlit порт: %s\n\n' "$PORT"
 
 [ "$GIT_USER" = "НЕ ЗАДАН" ] && printf '\033[33m!  не задан git user.email в этой копии — коммиты уйдут не от того автора\033[0m\n\n'

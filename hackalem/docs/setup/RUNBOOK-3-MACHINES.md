@@ -1,6 +1,6 @@
 # HackAlem · Трек «Добывающая промышленность» — боевой регламент команды
 
-**Состав:** 3 человека, 3 машины, 3 аккаунта Codex, 3 аккаунта GitLab, один общий репозиторий GitLab.
+**Состав:** 3 человека, 3 машины, 3 аккаунта Codex, 3 аккаунта GitHub, один общий репозиторий GitHub.
 **Инструмент:** ECC (Everything Claude Code) как плагин Codex + набор внешних скиллов.
 **Задача по умолчанию:** № 2 «PermitGuard — предсменный инспектор наряда-допуска» (паттерн 1: извлечение → детерминированная валидация → fail-closed вердикт с prooflinks и HITL). Замена на другую задачу — Приложение Б.
 
@@ -134,31 +134,33 @@ pip install openai pydantic streamlit pytest python-dotenv pandas pymupdf pillow
 
 ### Шаг 9. Репетиция (обязательно, 45–60 минут)
 
-Накануне прогнать сокращённый цикл на игрушечной задаче: «сделай CLI, который валидирует JSON по Pydantic-схеме и печатает отчёт с ссылками на строки». Цель не код, а проверить: агент в профиле `hack` работает без запросов подтверждения, коммитит, пушит в GitLab, а `make smoke` зелёный. Все три машины, одновременно, в один репозиторий.
+Накануне прогнать сокращённый цикл на игрушечной задаче: «сделай CLI, который валидирует JSON по Pydantic-схеме и печатает отчёт с ссылками на строки». Цель не код, а проверить: агент в профиле `hack` работает без запросов подтверждения, коммитит, пушит в GitHub, а `make smoke` зелёный. Все три машины, одновременно, в один репозиторий.
 
 ---
 
-# ЧАСТЬ II. Общий репозиторий GitLab
+# ЧАСТЬ II. Общий репозиторий GitHub
 
 ### 2.1. Настройка (делает роль A, один раз)
 
-1. GitLab → **New project** → Blank project, приватный, название `hackalem-permitguard`.
-2. **Settings → Members** → добавить двоих как **Maintainer** (не Developer: Developer не сможет пушить в защищённые ветки и вы потеряете 20 минут на разбирательства).
-3. **Settings → Repository → Protected branches** → снять защиту с `main`. На 5 часов ревью через MR — это роскошь; защищаемся не процессом, а разделением каталогов.
+1. GitHub → **New repository**, приватный, название `hackalem-permitguard`, без README (скелет свой).
+2. **Settings → Collaborators** → добавить двоих с правом **Write**. Они получат приглашение на почту — проследите, чтобы приняли до хакатона, иначе первый push упрётся в 403.
+3. **Ветку `main` не защищать.** По умолчанию она и так открыта; если включили Rulesets или Branch protection — выключите. На 5 часов ревью через pull request роскошь; защищаемся не процессом, а разделением каталогов.
 4. Запушить скелет (см. 2.3) и сказать в чат команды: «репозиторий готов, клонируйте».
 
 ### 2.2. Настройка (делает каждый, на своей машине)
 
 ```bash
 ssh-keygen -t ed25519 -C "hackalem"          # если ключа ещё нет
-cat ~/.ssh/id_ed25519.pub                     # GitLab → Preferences → SSH Keys → Add
+cat ~/.ssh/id_ed25519.pub                     # GitHub → Settings → SSH and GPG keys → New SSH key
 git config --global user.name  "Имя Фамилия"
-git config --global user.email "почта-от-gitlab@example.com"
-git clone git@gitlab.com:<группа>/hackalem-permitguard.git
+git config --global user.email "почта-от-github@example.com"
+git clone git@github.com:<владелец>/hackalem-permitguard.git
 cd hackalem-permitguard
 ```
 
-Проверка: `git push` пустого коммита проходит без пароля.
+Проверка: `ssh -T git@github.com` отвечает «Hi <ник>! You've successfully authenticated, but GitHub does not provide shell access.» Это успех, несмотря на формулировку и ненулевой код возврата.
+
+Полезно, но не обязательно: `gh` CLI (`brew install gh` / `apt install gh`), затем `gh auth login`. С ним ECC-скилл `$github-ops` умеет работать с issues и PR без ухода в браузер.
 
 ### 2.3. Скелет репозитория и карта владения
 
@@ -208,6 +210,16 @@ git push origin main
   git worktree add ../exp-ocr -b exp/ocr
   ```
 
+### 2.5. Что даёт GitHub сверх обычного git
+
+ECC знает GitHub нативно, и это можно использовать бесплатно, не меняя протокол:
+
+- `$github-ops` — работа с issues и PR из сессии Codex.
+- `/code-review` и `/review-pr` — если всё же понадобится разобрать чей-то PR (например, спорную правку в `core/` после заморозки контракта, которую роль A хочет посмотреть отдельно).
+- `gh pr create --fill` — вынести рискованную ветку на обсуждение за одну команду.
+
+Чего **не** делать: включать GitHub Actions. CI на хакатоне съедает минуты ожидания и ничего не добавляет — ворота приёмки гоняются локально через `make`.
+
 ---
 
 # ЧАСТЬ III. Роли
@@ -218,7 +230,7 @@ git push origin main
 |---|---|---|---|
 | **Владеет** | `AGENTS.md`, `core/`, `eval/`, `Makefile`, `.codex/` | `data/`, `extract/` | `rules/`, `ui/`, `docs/pitch/` |
 | **Главный результат** | Pydantic-схема результата, mock-API SDK, оркестратор, eval-раннер, зелёный `make smoke` | 60 синтетических комплектов, из них 20 с зашитыми нарушениями + `ground_truth.json`; извлечение полей из PDF/сканов с prooflinks | Детерминированный движок правил, fail-closed вердикт, UI с красной карточкой и replay-режимом, слайды |
-| **Скиллы ECC** | `$contract-first`, `$api-design`, `$eval-harness`, `$verification-loop`, `$git-workflow` | `$python-patterns`, `$regex-vs-llm-structured-text`, `$search-first`, `$iterative-retrieval` | `$frontend-patterns`, `$make-interfaces-feel-better`, `$frontend-slides`, `$ui-demo` |
+| **Скиллы ECC** | `$contract-first`, `$api-design`, `$eval-harness`, `$verification-loop`, `$git-workflow`, `$github-ops` | `$python-patterns`, `$regex-vs-llm-structured-text`, `$search-first`, `$iterative-retrieval` | `$frontend-patterns`, `$make-interfaces-feel-better`, `$frontend-slides`, `$ui-demo` |
 | **Внешние скиллы** | — | `anydoc` / `docling` | `ui-ux-pro-max`, `diagram-design` |
 | **Роль в питче** | отвечает на технические вопросы жюри | держит ноутбук, грузит ловушечный наряд | говорит 3 минуты |
 
@@ -340,7 +352,7 @@ git add .hack-t0 && git commit -m "[A] ops: T+0" && git push   # чтобы от
 | Что случилось | Что делать |
 |---|---|
 | На площадке нет интернета до GitHub | ECC уже стоит (Шаг 3 сделан накануне). Из сети нужен только api.openai.com |
-| GitLab недоступен | Резерв: `git remote add backup <зеркало на GitHub>`, пушим туда; в конце синхронизируем |
+| GitHub недоступен | Резерв: `git remote add backup <зеркало на GitLab или локальный bare-репозиторий на флешке>`, пушим туда, в конце синхронизируем |
 | Кончилась квота Codex у одного | У двоих других свои аккаунты — этот человек переключается на ручной контроль, питч и данные |
 | Сломан `main` | `git log --oneline` → найти последний зелёный → `git reset --hard <sha>` → `git push --force-with-lease` (единственный случай, когда force разрешён, и делает его **только роль A**) |
 | Живое демо упало на сцене | Включается записанное видео (`$ui-demo`, сделано на T+210). Никогда не выходить на сцену без резервного видео |

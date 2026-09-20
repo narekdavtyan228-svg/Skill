@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# setup-solo.sh — подготовка ОДНОЙ машины с тремя аккаунтами Codex и тремя аккаунтами GitLab.
+# setup-solo.sh — подготовка ОДНОЙ машины с тремя аккаунтами Codex и тремя аккаунтами GitHub.
 # Запускать НАКАНУНЕ хакатона.
 #
 #   bash setup-solo.sh <ssh-url-репозитория> [путь-к-локальной-копии-ECC]
 #
 # Пример:
-#   bash setup-solo.sh git@gitlab.com:myteam/hackalem-permitguard.git
-#   bash setup-solo.sh git@gitlab.com:myteam/hackalem-permitguard.git ~/tools/ECC
+#   bash setup-solo.sh git@github.com:myowner/hackalem-permitguard.git
+#   bash setup-solo.sh git@github.com:myowner/hackalem-permitguard.git ~/tools/ECC
 #
 # Скрипт идемпотентен: существующие ключи, дома и клоны не перезаписываются.
 
@@ -21,10 +21,10 @@ say()  { printf '\n\033[1m==> %s\033[0m\n' "$*"; }
 warn() { printf '\033[33m!  %s\033[0m\n' "$*"; }
 fail() { printf '\033[31mОШИБКА: %s\033[0m\n' "$*" >&2; exit 1; }
 
-[ -n "$REPO_URL" ] || fail "укажите SSH-URL репозитория, например git@gitlab.com:team/repo.git"
+[ -n "$REPO_URL" ] || fail "укажите SSH-URL репозитория, например git@github.com:owner/repo.git"
 [[ "$REPO_URL" == git@* ]] || fail "нужен SSH-URL (git@...), а не https"
 
-# Из git@gitlab.com:team/repo.git достаём путь team/repo.git
+# Из git@github.com:owner/repo.git достаём путь owner/repo.git
 REPO_PATH="${REPO_URL#*:}"
 
 say "1/6 Проверка предусловий"
@@ -66,31 +66,33 @@ if [ -n "${ECC_SRC:-}" ] && [ -f "$ECC_SRC/scripts/codex/check-plugin-cache.js" 
   (cd "$ECC_SRC" && node scripts/codex/check-plugin-cache.js) || warn "проверка кэша плагина не прошла"
 fi
 
-say "4/6 Три SSH-ключа и хост-алиасы GitLab"
+say "4/6 Три SSH-ключа и хост-алиасы GitHub"
 mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 touch "$HOME/.ssh/config" && chmod 600 "$HOME/.ssh/config"
 for L in "${LANES[@]}"; do
   KEY="$HOME/.ssh/gl_$L"
   [ -f "$KEY" ] || ssh-keygen -t ed25519 -N "" -f "$KEY" -C "hackalem-$L"
-  if grep -q "^Host gitlab-$L$" "$HOME/.ssh/config"; then
-    echo "  алиас gitlab-$L уже настроен"
+  if grep -q "^Host github-$L$" "$HOME/.ssh/config"; then
+    echo "  алиас github-$L уже настроен"
   else
     cat >> "$HOME/.ssh/config" <<EOF
 
-Host gitlab-$L
-    HostName gitlab.com
+Host github-$L
+    HostName github.com
     User git
     IdentityFile $KEY
     IdentitiesOnly yes
 EOF
-    echo "  добавлен алиас gitlab-$L"
+    echo "  добавлен алиас github-$L"
   fi
 done
 echo
-echo "Добавьте КАЖДЫЙ ключ в СВОЙ аккаунт GitLab (Preferences -> SSH Keys):"
+echo "Добавьте КАЖДЫЙ ключ в СВОЙ аккаунт GitHub (Settings -> SSH and GPG keys -> New SSH key)."
+echo "GitHub не разрешает один ключ на двух аккаунтах — ключи обязаны быть разными, они такие и есть."
 for L in "${LANES[@]}"; do echo; echo "--- аккаунт $L ---"; cat "$HOME/.ssh/gl_$L.pub"; done
 echo
-echo "После добавления проверьте:  ssh -T gitlab-a ; ssh -T gitlab-b ; ssh -T gitlab-c"
+echo "После добавления проверьте:  ssh -T github-a ; ssh -T github-b ; ssh -T github-c"
+echo "В ответе должны быть ТРИ РАЗНЫХ ника. Фраза про отсутствие shell-доступа — это успех."
 
 say "5/6 Три рабочих копии репозитория"
 mkdir -p "$HACK_DIR" "$HACK_DIR/logs" "$HACK_DIR/prompts"
@@ -99,9 +101,9 @@ for L in "${LANES[@]}"; do
   if [ -d "$DIR/.git" ]; then
     echo "  $DIR уже существует"
   else
-    git clone "git@gitlab-$L:$REPO_PATH" "$DIR" || { warn "клон дорожки $L не удался (добавлен ли ключ в GitLab?)"; continue; }
+    git clone "git@github-$L:$REPO_PATH" "$DIR" || { warn "клон дорожки $L не удался: добавлен ли ключ в GitHub и принято ли приглашение Collaborator?"; continue; }
   fi
-  git -C "$DIR" remote set-url origin "git@gitlab-$L:$REPO_PATH"
+  git -C "$DIR" remote set-url origin "git@github-$L:$REPO_PATH"
   echo "  задайте идентичность дорожки $L:"
   echo "    git -C $DIR config user.name \"Имя $L\" && git -C $DIR config user.email \"почта-$L\""
 done
@@ -122,7 +124,10 @@ cat <<EOF
 
 Осталось вручную:
   1) codex login в тех домах, где его не было (см. предупреждения выше);
-  2) добавить три публичных ключа в три аккаунта GitLab и проверить ssh -T gitlab-{a,b,c};
+  2) добавить три публичных ключа в три аккаунта GitHub (по одному на аккаунт) и проверить
+     ssh -T github-a / github-b / github-c — ники в ответах должны различаться;
+  2a) владелец репозитория: Settings -> Collaborators -> два других аккаунта с правом Write,
+      приглашения должны быть ПРИНЯТЫ до хакатона, иначе push упрётся в 403;
   3) задать git user.name / user.email в каждой копии (команды напечатаны выше);
   4) в каждом доме один раз: CODEX_HOME=~/.codex-X codex  ->  /plugins (ECC enabled)  ->  \$configure-ecc
   5) положить lane.sh в $HACK_DIR и chmod +x;

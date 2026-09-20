@@ -56,8 +56,8 @@ echo "Для задач HaulDispatch / NPT Investigator дополнительн
 
 say "5/5 Git"
 git config --global user.name  >/dev/null 2>&1 || echo "Задайте: git config --global user.name  \"Имя Фамилия\""
-git config --global user.email >/dev/null 2>&1 || echo "Задайте: git config --global user.email \"почта-от-gitlab\""
-[ -f "$HOME/.ssh/id_ed25519.pub" ] || echo "SSH-ключа нет. Создайте: ssh-keygen -t ed25519 -C hackalem, затем добавьте в GitLab → Preferences → SSH Keys"
+git config --global user.email >/dev/null 2>&1 || echo "Задайте: git config --global user.email \"почта-от-github\""
+[ -f "$HOME/.ssh/id_ed25519.pub" ] || echo "SSH-ключа нет. Создайте: ssh-keygen -t ed25519 -C hackalem, затем добавьте в GitHub -> Settings -> SSH and GPG keys"
 
 cat <<'EOF'
 
