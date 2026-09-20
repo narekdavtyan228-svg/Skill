@@ -1,0 +1,52 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+#
+# Кладётся в репозиторий как .codex/config.toml (владелец — роль A).
+# Запасной путь, если проектный конфиг не подхватился: скопировать в ~/.codex/config.toml.
+#
+# Запуск боевого режима:   codex -p hack
+# Запуск безопасного:      codex -p safe
+
+# ─── База: спрашивает подтверждение, но пишет только в рабочий каталог ───
+approval_policy = "on-request"
+sandbox_mode    = "workspace-write"
+web_search      = "live"
+
+[sandbox_workspace_write]
+# Нужен доступ в сеть: вызовы api.openai.com, pip install, git push.
+network_access = true
+
+# Добавляется к каждому промпту (аддитивно, AGENTS.md не заменяет).
+persistent_instructions = """
+Следуй AGENTS.md этого репозитория. Работай только в каталогах своей роли.
+Сначала план в docs/plan-<буква>.md и остановка на подтверждение, потом код.
+Никогда не говори "готово" без зелёного make smoke, python -m eval.run и pytest -q.
+Никаких git push --force и правок чужих каталогов.
+Отвечай по-русски, коротко.
+"""
+
+# ─── Профиль хакатона: без запросов подтверждения ───
+[profiles.hack]
+approval_policy = "never"
+sandbox_mode    = "workspace-write"
+web_search      = "live"
+
+# ─── Профиль разбора/ревью: только чтение ───
+[profiles.safe]
+approval_policy = "on-request"
+sandbox_mode    = "read-only"
+web_search      = "live"
+
+# ─── Мультиагентность внутри одной сессии ───
+[features]
+multi_agent = true
+
+[agents]
+max_threads = 4
+max_depth   = 1
+
+# MCP-серверы на хакатоне намеренно не подключаем: каждый npx-старт — это
+# время, сеть и риск. Раскомментируйте только если действительно нужно.
+# [mcp_servers.context7]
+# command = "npx"
+# args = ["-y", "@upstash/context7-mcp@latest"]
+# startup_timeout_sec = 30
