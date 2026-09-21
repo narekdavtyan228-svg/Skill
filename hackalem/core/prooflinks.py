@@ -37,11 +37,6 @@ def _resolve_source(permit_dir: Path, source_id: str) -> tuple[Path | None, str 
         return None, "source_id escapes the permit bundle"
     if exact.is_file():
         return exact, None
-    matches = [path for path in permit_dir.rglob(candidate.name) if path.is_file()]
-    if len(matches) == 1:
-        return matches[0], None
-    if len(matches) > 1:
-        return None, "source_id is ambiguous inside the permit bundle"
     return None, "source_id does not exist inside the permit bundle"
 
 
@@ -54,7 +49,7 @@ def _read_location(path: Path, kind: str, index: int) -> tuple[str | None, str |
                 if index > document.page_count:
                     return None, f"page {index} does not exist"
                 return document.load_page(index - 1).get_text(), None
-        except (fitz.FileDataError, RuntimeError, ValueError) as exc:
+        except (OSError, fitz.FileDataError, RuntimeError, ValueError) as exc:
             return None, f"PDF cannot be read: {exc}"
 
     try:

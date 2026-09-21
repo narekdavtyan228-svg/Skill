@@ -146,6 +146,8 @@ def _safe_extract(permit_dir: Path, audit: list[str], unknowns: list[str]) -> Ex
     candidate = _load_function("extract.extractor", "extract_permit")
     extractor: Extractor = candidate if candidate is not None else _fallback_extract  # type: ignore[assignment]
     audit.append("extractor:real" if candidate is not None else "extractor:fallback")
+    if candidate is None:
+        unknowns.append("Required extraction module is unavailable")
     try:
         raw = extractor(permit_dir)
         return raw if isinstance(raw, ExtractedPermit) else ExtractedPermit.model_validate(raw)
@@ -164,6 +166,8 @@ def _safe_rules(
     candidate = _load_function("rules.engine", "evaluate_rules")
     engine: RulesEngine = candidate if candidate is not None else _fallback_rules  # type: ignore[assignment]
     audit.append("rules:real" if candidate is not None else "rules:fallback")
+    if candidate is None:
+        unknowns.append("Required rules engine is unavailable; full validation was not performed")
     try:
         return [item if isinstance(item, Finding) else Finding.model_validate(item) for item in engine(permit, registries)]
     except (ValueError, TypeError, ValidationError, ArithmeticError) as exc:
@@ -231,9 +235,9 @@ def run(permit_dir: str | Path, run_id: str | None = None) -> PermitResult:
         audit.append("verdict:fail-closed-override")
 
     decision = (
-        "An authorized supervisor must resolve the listed barriers before work starts."
+        "Уполномоченный руководитель должен устранить указанные барьеры до начала работ."
         if verdict == "block_and_escalate"
-        else "An authorized supervisor must review this recommendation and make the final decision."
+        else "Уполномоченный руководитель должен проверить рекомендацию и принять окончательное решение."
     )
     return PermitResult(
         run_id=run_id or f"run-{uuid4().hex[:12]}",

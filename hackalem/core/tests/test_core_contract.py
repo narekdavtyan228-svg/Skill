@@ -77,3 +77,25 @@ def test_row_prooflink_must_match_real_quote(tmp_path) -> None:
 
     assert validate_prooflink(valid, tmp_path).valid is True
     assert validate_prooflink(invalid, tmp_path).valid is False
+
+
+@pytest.mark.parametrize("source_id", ["../gas_log.csv", "missing/gas_log.csv"])
+def test_prooflink_rejects_wrong_paths(tmp_path, source_id) -> None:
+    (tmp_path / "gas_log.csv").write_text("evidence", encoding="utf-8")
+    link = Prooflink(source_id=source_id, location="row:1", quote="evidence")
+    assert not validate_prooflink(link, tmp_path).valid
+
+
+def test_missing_rules_engine_blocks_a_clean_bundle(monkeypatch) -> None:
+    from pathlib import Path
+    from core import orchestrator
+
+    original = orchestrator._load_function
+    monkeypatch.setattr(
+        orchestrator, "_load_function",
+        lambda module, function: None if module == "rules.engine" else original(module, function),
+    )
+    bundle = Path(__file__).resolve().parents[2] / "data/fixtures/permit_0001"
+    result = orchestrator.run(bundle)
+    assert result.verdict == "block_and_escalate"
+    assert any("rules engine is unavailable" in item for item in result.unknowns)

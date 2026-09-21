@@ -49,10 +49,13 @@ def _violations(row: dict[str, Any]) -> tuple[frozenset[str], bool]:
 def evaluate(ground_truth_path: Path | None = None) -> dict[str, float | int]:
     truth_path = ground_truth_path or PROJECT_ROOT / "data" / "ground_truth.json"
     if not truth_path.is_file():
-        return summarize([]).as_dict()
+        raise ValueError(f"Ground truth not found: {truth_path}")
     payload = json.loads(truth_path.read_text(encoding="utf-8"))
+    rows = _case_rows(payload)
+    if not rows:
+        raise ValueError("Ground truth contains no cases")
     evaluated: list[EvaluatedCase] = []
-    for index, row in enumerate(_case_rows(payload), start=1):
+    for index, row in enumerate(rows, start=1):
         case_id = str(row.get("case_id") or row.get("permit_id") or row.get("id") or f"case-{index}")
         relative_path = row.get("permit_dir") or row.get("fixture") or case_id
         bundle = PROJECT_ROOT / "data" / "fixtures" / str(relative_path)
@@ -74,10 +77,23 @@ def evaluate(ground_truth_path: Path | None = None) -> dict[str, float | int]:
 
 
 def main() -> int:
-    print(json.dumps(evaluate(), ensure_ascii=False, indent=2, sort_keys=True))
-    return 0
+    try:
+        metrics = evaluate()
+    except (OSError, ValueError) as exc:
+        print(json.dumps({"error": str(exc)}, ensure_ascii=False))
+        return 1
+    print(json.dumps(metrics, ensure_ascii=False, indent=2, sort_keys=True))
+    passed = (
+        metrics["evaluated_cases"] == 60
+        and metrics["expected_violations"] == 20
+        and metrics["recall"] >= 0.8
+        and metrics["false_approves"] == 0
+        and metrics["findings_without_valid_prooflink_rate"] == 0
+        and metrics["clean_cases"] == 40
+        and metrics["false_blocks"] == 0
+    )
+    return 0 if passed else 1
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

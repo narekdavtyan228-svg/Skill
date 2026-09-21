@@ -56,6 +56,15 @@ def employee_clearance(employee_id: str) -> EmployeeClearanceRecord:
             allowed_zones=["ZONE-A", "ZONE-B"],
             prooflinks=[_proof("employee_clearance", query, "clear through 2030-01-01")],
         )
+    if query in {"EMP-EXPIRED-0055", "EMP-EXPIRED-0056", "EMP-EXPIRED-0057"}:
+        return EmployeeClearanceRecord(
+            queried_id=query,
+            status="blocked",
+            cleared=False,
+            valid_until=datetime(2026, 9, 19, tzinfo=timezone.utc),
+            allowed_zones=["ZONE-A", "ZONE-B"],
+            prooflinks=[_proof("employee_clearance", query, "clearance expired")],
+        )
     return EmployeeClearanceRecord(
         queried_id=query,
         status="unknown",
