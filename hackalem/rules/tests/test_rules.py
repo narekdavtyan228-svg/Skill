@@ -34,3 +34,9 @@ def test_traps_block_with_the_expected_rule(case_id: str, expected_rule: str) ->
     assert result.verdict == "block_and_escalate"
     assert expected_rule in {finding.rule_id for finding in result.findings}
     assert all(finding.prooflinks for finding in result.findings)
+
+
+def test_expired_clearance_does_not_create_a_spurious_zone_violation() -> None:
+    result = run(FIXTURES / "permit_0055")
+    assert {finding.rule_id for finding in result.findings} == {"R-EMP-01"}
+    assert result.findings[0].classification == "confirmed"

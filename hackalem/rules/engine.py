@@ -288,7 +288,7 @@ def _check_zone(permit: ExtractedPermit, registries: RegistrySnapshot, spec: Rul
         return _finding(spec, "unknown", "Реестры не подтвердили доступность зоны работ.", *sources)
     if site.queried_id != zone_id:
         return _finding(spec, "contested", "Зона документа не совпадает с запросом реестра площадки.", *sources)
-    if employee.status == "blocked" or zone_id not in employee.allowed_zones:
+    if zone_id not in employee.allowed_zones:
         return _finding(spec, "confirmed", "Работник не допущен в указанную зону.", *sources)
     if site.status == "blocked" or site.work_allowed is not True:
         return _finding(spec, "confirmed", "Работы в указанной зоне ограничены площадкой.", *sources)
@@ -404,4 +404,3 @@ def evaluate_rules(permit: ExtractedPermit, registries: RegistrySnapshot) -> lis
         if finding is not None:
             findings.append(finding)
     return findings
-

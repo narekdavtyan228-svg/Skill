@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import html
+import json
 import sys
 from pathlib import Path
 from typing import Callable
 
 import streamlit as st
+import pymupdf
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -55,6 +57,7 @@ h1 { font-size: 1.75rem !important; margin: 0 !important; }
 .pg-proof { border-left: 3px solid #9AA3AC; padding: 4px 0 4px 12px; margin: 8px 0; }
 .pg-proof-source { color: var(--pg-muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .8rem; }
 .pg-proof-quote { color: var(--pg-text); margin-top: 2px; }
+.pg-proof-source, .pg-proof-quote, .pg-unknown { overflow-wrap: anywhere; }
 div.stButton > button[kind="primary"] { background: var(--pg-orange); border-color: var(--pg-orange); min-height: 44px; }
 div.stButton > button { border-radius: 6px; min-height: 44px; }
 div[data-testid="stExpander"] { background: var(--pg-surface); border-radius: 6px; border-color: var(--pg-border); }
@@ -103,6 +106,37 @@ def _status_copy(result: PermitResult) -> tuple[str, str, str]:
     if result.verdict == "approve_with_conditions":
         return "condition", "ТРЕБУЮТСЯ УСЛОВИЯ", "Рекомендация ожидает решения уполномоченного лица"
     return "", "БАРЬЕРЫ НЕ ОБНАРУЖЕНЫ", "Это рекомендация системы, а не разрешение начать работы"
+
+
+def clear_result() -> None:
+    st.session_state.pop("permit_result", None)
+
+
+def select_demo(label: str) -> None:
+    st.session_state["bundle_label"] = label
+    clear_result()
+
+
+def render_documents(bundle: Path) -> None:
+    documents = sorted(
+        path for path in bundle.iterdir()
+        if path.is_file() and path.suffix.lower() in {".pdf", ".json", ".csv"}
+        and path.resolve().is_relative_to(bundle.resolve())
+    )
+    if not documents:
+        st.warning("Документы отсутствуют")
+        return
+    selected = st.selectbox("Исходный документ", documents, format_func=lambda path: path.name)
+    try:
+        if selected.suffix.lower() == ".pdf":
+            with pymupdf.open(selected) as document:
+                page = st.number_input("Страница", min_value=1, max_value=max(1, document.page_count), value=1)
+                bitmap = document[int(page) - 1].get_pixmap(matrix=pymupdf.Matrix(1.4, 1.4))
+                st.image(bitmap.tobytes("png"), width=850)
+        else:
+            st.code(selected.read_text(encoding="utf-8-sig"), language="json" if selected.suffix == ".json" else None, line_numbers=True)
+    except (OSError, ValueError, RuntimeError, IndexError) as exc:
+        st.error(f"Не удалось открыть документ: {type(exc).__name__}")
 
 
 def render_result(result: PermitResult) -> None:
@@ -155,24 +189,40 @@ def main() -> None:
     st.markdown('<div class="pg-kicker">Предсменный контроль</div>', unsafe_allow_html=True)
     st.title("PermitGuard")
     st.caption("Проверка наряда-допуска перед началом работ")
+    st.caption("Синтетические документы · демонстрационные реестры")
 
     bundles = discover_bundles()
     labels = list(bundles)
     controls, action, replay = st.columns([5, 2, 2], vertical_alignment="bottom")
     with controls:
-        selected = st.selectbox("Комплект документов", labels)
+        selected = st.selectbox("Комплект документов", labels, key="bundle_label", on_change=clear_result)
     with action:
-        check = st.button("Проверить", type="primary", use_container_width=True)
+        check = st.button("Проверить", type="primary", width="stretch", icon=":material/fact_check:")
     with replay:
-        demo = st.button("Демо-проверка", use_container_width=True)
+        demo = st.button("Демо-проверка", width="stretch", icon=":material/replay:", on_click=select_demo, args=(labels[0],))
 
     if check or demo:
         target = REPLAY_DIR if demo else bundles[selected]
         with st.spinner("Выполняется проверка"):
             st.session_state["permit_result"] = run_safely(target)
     result = st.session_state.get("permit_result")
-    if isinstance(result, PermitResult):
-        render_result(result)
+    summary, documents, audit = st.tabs(["Результат", "Документы", "Журнал проверки"])
+    with summary:
+        if isinstance(result, PermitResult):
+            render_result(result)
+            st.download_button(
+                "Скачать заключение", json.dumps(result.model_dump(mode="json"), ensure_ascii=False, indent=2),
+                file_name=f"{result.run_id}.json", mime="application/json", icon=":material/download:",
+            )
+        else:
+            st.info("Комплект ожидает проверки")
+    with documents:
+        render_documents(bundles[selected])
+    with audit:
+        if isinstance(result, PermitResult):
+            st.code("\n".join(result.audit_log), language=None)
+        else:
+            st.caption("Записей пока нет")
 
 
 if __name__ == "__main__":
