@@ -1,0 +1,75 @@
+version: 1
+rules:
+  - rule_id: R-EMP-01
+    description: Допуск назначенного работника действует до завершения работ.
+    severity: P1
+    condition: employee_clearance.cleared is true and valid_until >= work_end
+    required_sources: [employee_id, work_end, employee_clearance]
+    on_missing: insufficient_evidence
+    on_conflict: contested
+    on_invalid_format: insufficient_evidence
+    required_human_decision: Подтвердить действующий допуск работника на весь интервал работ.
+  - rule_id: R-GAS-01
+    description: Газоанализ существует и действителен на момент начала работ.
+    severity: P1
+    condition: gas_tested_at <= work_start <= gas_tested_at + gas_valid_minutes and registry covers work_start
+    required_sources: [permit_id, work_start, gas_tested_at, gas_valid_minutes, gas_test_status]
+    on_missing: insufficient_evidence
+    on_conflict: contested
+    on_invalid_format: insufficient_evidence
+    required_human_decision: Выполнить и документально подтвердить действующий газоанализ до начала работ.
+  - rule_id: R-LOTO-01
+    description: Требуемая LOTO-изоляция подтверждена документом и реестром.
+    severity: P1
+    condition: asset_isolation.isolated is true and registry isolation_id equals permit isolation_id
+    required_sources: [asset_id, isolation_id, asset_isolation]
+    on_missing: insufficient_evidence
+    on_conflict: contested
+    on_invalid_format: insufficient_evidence
+    required_human_decision: Сверить и подтвердить изоляцию оборудования уполномоченным специалистом.
+  - rule_id: R-PACK-01
+    description: Пакет содержит все обязательные типы документов и источники.
+    severity: P2
+    condition: required_documents_present is true
+    required_sources: [required_documents_present]
+    on_missing: insufficient_evidence
+    on_conflict: contested
+    on_invalid_format: insufficient_evidence
+    required_human_decision: Дополнить пакет обязательными документами и повторить проверку.
+  - rule_id: R-SHIFT-01
+    description: Интервал работ полностью находится внутри разрешенной смены.
+    severity: P2
+    condition: shift_start <= work_start < work_end <= shift_end
+    required_sources: [work_start, work_end, shift_start, shift_end]
+    on_missing: insufficient_evidence
+    on_conflict: contested
+    on_invalid_format: insufficient_evidence
+    required_human_decision: Подтвердить интервал работ в границах разрешенной смены.
+  - rule_id: R-SIG-01
+    description: Обязательная подпись ответственного присутствует и доказуема.
+    severity: P1
+    condition: responsible_signature is true
+    required_sources: [responsible_signature]
+    on_missing: insufficient_evidence
+    on_conflict: contested
+    on_invalid_format: insufficient_evidence
+    required_human_decision: Получить и проверить подпись ответственного лица до начала работ.
+  - rule_id: R-SIMOPS-01
+    description: Нет активных несовместимых работ в той же зоне и интервале.
+    severity: P1
+    condition: zone_id not in concurrent_work_zones
+    required_sources: [zone_id, concurrent_work_zones]
+    on_missing: insufficient_evidence
+    on_conflict: contested
+    on_invalid_format: insufficient_evidence
+    required_human_decision: Развести несовместимые работы по зоне или времени и подтвердить координацию.
+  - rule_id: R-ZONE-01
+    description: Зона наряда разрешена работнику и не закрыта ограничениями площадки.
+    severity: P1
+    condition: zone_id in employee_clearance.allowed_zones and site_restrictions.work_allowed is true
+    required_sources: [zone_id, employee_clearance, site_restrictions]
+    on_missing: insufficient_evidence
+    on_conflict: contested
+    on_invalid_format: insufficient_evidence
+    required_human_decision: Подтвердить право работника и площадки на выполнение работ в указанной зоне.
+
