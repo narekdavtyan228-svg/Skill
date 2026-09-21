@@ -24,7 +24,7 @@ test:
 	pytest -q
 
 data:
-	python -m data.generator --count 60 --violations 20
+	python -m data.generator --output data --seed 20260920
 
 ui:
 	streamlit run ui/app.py --server.port $${STREAMLIT_SERVER_PORT:-8501}
