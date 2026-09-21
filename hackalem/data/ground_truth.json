@@ -1,0 +1,698 @@
+{
+  "cases": [
+    {
+      "case_id": "permit_0001",
+      "critical": false,
+      "permit_dir": "permit_0001",
+      "permit_id": "PERMIT-001",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0002",
+      "critical": false,
+      "permit_dir": "permit_0002",
+      "permit_id": "PERMIT-002",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0003",
+      "critical": false,
+      "permit_dir": "permit_0003",
+      "permit_id": "PERMIT-003",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0004",
+      "critical": false,
+      "permit_dir": "permit_0004",
+      "permit_id": "PERMIT-004",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0005",
+      "critical": false,
+      "permit_dir": "permit_0005",
+      "permit_id": "PERMIT-005",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0006",
+      "critical": false,
+      "permit_dir": "permit_0006",
+      "permit_id": "PERMIT-006",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0007",
+      "critical": false,
+      "permit_dir": "permit_0007",
+      "permit_id": "PERMIT-007",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0008",
+      "critical": false,
+      "permit_dir": "permit_0008",
+      "permit_id": "PERMIT-008",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0009",
+      "critical": false,
+      "permit_dir": "permit_0009",
+      "permit_id": "PERMIT-009",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0010",
+      "critical": false,
+      "permit_dir": "permit_0010",
+      "permit_id": "PERMIT-010",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0011",
+      "critical": false,
+      "permit_dir": "permit_0011",
+      "permit_id": "PERMIT-011",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0012",
+      "critical": false,
+      "permit_dir": "permit_0012",
+      "permit_id": "PERMIT-012",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0013",
+      "critical": false,
+      "permit_dir": "permit_0013",
+      "permit_id": "PERMIT-013",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0014",
+      "critical": false,
+      "permit_dir": "permit_0014",
+      "permit_id": "PERMIT-014",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0015",
+      "critical": false,
+      "permit_dir": "permit_0015",
+      "permit_id": "PERMIT-015",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0016",
+      "critical": false,
+      "permit_dir": "permit_0016",
+      "permit_id": "PERMIT-016",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0017",
+      "critical": false,
+      "permit_dir": "permit_0017",
+      "permit_id": "PERMIT-017",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0018",
+      "critical": false,
+      "permit_dir": "permit_0018",
+      "permit_id": "PERMIT-018",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0019",
+      "critical": false,
+      "permit_dir": "permit_0019",
+      "permit_id": "PERMIT-019",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0020",
+      "critical": false,
+      "permit_dir": "permit_0020",
+      "permit_id": "PERMIT-020",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0021",
+      "critical": false,
+      "permit_dir": "permit_0021",
+      "permit_id": "PERMIT-021",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0022",
+      "critical": false,
+      "permit_dir": "permit_0022",
+      "permit_id": "PERMIT-022",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0023",
+      "critical": false,
+      "permit_dir": "permit_0023",
+      "permit_id": "PERMIT-023",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0024",
+      "critical": false,
+      "permit_dir": "permit_0024",
+      "permit_id": "PERMIT-024",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0025",
+      "critical": false,
+      "permit_dir": "permit_0025",
+      "permit_id": "PERMIT-025",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0026",
+      "critical": false,
+      "permit_dir": "permit_0026",
+      "permit_id": "PERMIT-026",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0027",
+      "critical": false,
+      "permit_dir": "permit_0027",
+      "permit_id": "PERMIT-027",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0028",
+      "critical": false,
+      "permit_dir": "permit_0028",
+      "permit_id": "PERMIT-028",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0029",
+      "critical": false,
+      "permit_dir": "permit_0029",
+      "permit_id": "PERMIT-029",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0030",
+      "critical": false,
+      "permit_dir": "permit_0030",
+      "permit_id": "PERMIT-030",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0031",
+      "critical": false,
+      "permit_dir": "permit_0031",
+      "permit_id": "PERMIT-031",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0032",
+      "critical": false,
+      "permit_dir": "permit_0032",
+      "permit_id": "PERMIT-032",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0033",
+      "critical": false,
+      "permit_dir": "permit_0033",
+      "permit_id": "PERMIT-033",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0034",
+      "critical": false,
+      "permit_dir": "permit_0034",
+      "permit_id": "PERMIT-034",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0035",
+      "critical": false,
+      "permit_dir": "permit_0035",
+      "permit_id": "PERMIT-035",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0036",
+      "critical": false,
+      "permit_dir": "permit_0036",
+      "permit_id": "PERMIT-036",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0037",
+      "critical": false,
+      "permit_dir": "permit_0037",
+      "permit_id": "PERMIT-037",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0038",
+      "critical": false,
+      "permit_dir": "permit_0038",
+      "permit_id": "PERMIT-038",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0039",
+      "critical": false,
+      "permit_dir": "permit_0039",
+      "permit_id": "PERMIT-039",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0040",
+      "critical": false,
+      "permit_dir": "permit_0040",
+      "permit_id": "PERMIT-040",
+      "violations": []
+    },
+    {
+      "case_id": "permit_0041",
+      "critical": true,
+      "permit_dir": "permit_0041",
+      "permit_id": "PERMIT-041",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "row:2",
+              "quote": "2026-09-24T05:35:00Z",
+              "source_id": "gas_log.csv"
+            }
+          ],
+          "rule_id": "R-GAS-01",
+          "severity": "P1",
+          "type": "expired_gas_test"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0042",
+      "critical": true,
+      "permit_dir": "permit_0042",
+      "permit_id": "PERMIT-042",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "row:2",
+              "quote": "2026-09-25T05:35:00Z",
+              "source_id": "gas_log.csv"
+            }
+          ],
+          "rule_id": "R-GAS-01",
+          "severity": "P1",
+          "type": "expired_gas_test"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0043",
+      "critical": true,
+      "permit_dir": "permit_0043",
+      "permit_id": "PERMIT-043",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "row:2",
+              "quote": "2026-09-26T05:30:00Z",
+              "source_id": "gas_log.csv"
+            }
+          ],
+          "rule_id": "R-GAS-01",
+          "severity": "P1",
+          "type": "expired_gas_test"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0044",
+      "critical": true,
+      "permit_dir": "permit_0044",
+      "permit_id": "PERMIT-044",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "row:2",
+              "quote": "2026-09-27T05:35:00Z",
+              "source_id": "gas_log.csv"
+            }
+          ],
+          "rule_id": "R-GAS-01",
+          "severity": "P1",
+          "type": "expired_gas_test"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0045",
+      "critical": true,
+      "permit_dir": "permit_0045",
+      "permit_id": "PERMIT-045",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "page:1",
+              "quote": "Responsible signature: NO",
+              "source_id": "permit_0045.pdf"
+            }
+          ],
+          "rule_id": "R-SIG-01",
+          "severity": "P1",
+          "type": "missing_responsible_signature"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0046",
+      "critical": true,
+      "permit_dir": "permit_0046",
+      "permit_id": "PERMIT-046",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "page:1",
+              "quote": "Responsible signature: NO",
+              "source_id": "permit_0046.pdf"
+            }
+          ],
+          "rule_id": "R-SIG-01",
+          "severity": "P1",
+          "type": "missing_responsible_signature"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0047",
+      "critical": true,
+      "permit_dir": "permit_0047",
+      "permit_id": "PERMIT-047",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "page:1",
+              "quote": "Responsible signature: NO",
+              "source_id": "permit_0047.pdf"
+            }
+          ],
+          "rule_id": "R-SIG-01",
+          "severity": "P1",
+          "type": "missing_responsible_signature"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0048",
+      "critical": true,
+      "permit_dir": "permit_0048",
+      "permit_id": "PERMIT-048",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "page:1",
+              "quote": "Responsible signature: NO",
+              "source_id": "permit_0048.pdf"
+            }
+          ],
+          "rule_id": "R-SIG-01",
+          "severity": "P1",
+          "type": "missing_responsible_signature"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0049",
+      "critical": true,
+      "permit_dir": "permit_0049",
+      "permit_id": "PERMIT-049",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "page:1",
+              "quote": "Zone ID: ZONE-X",
+              "source_id": "permit_0049.pdf"
+            }
+          ],
+          "rule_id": "R-ZONE-01",
+          "severity": "P1",
+          "type": "unauthorized_work_zone"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0050",
+      "critical": true,
+      "permit_dir": "permit_0050",
+      "permit_id": "PERMIT-050",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "page:1",
+              "quote": "Zone ID: ZONE-X",
+              "source_id": "permit_0050.pdf"
+            }
+          ],
+          "rule_id": "R-ZONE-01",
+          "severity": "P1",
+          "type": "unauthorized_work_zone"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0051",
+      "critical": true,
+      "permit_dir": "permit_0051",
+      "permit_id": "PERMIT-051",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "page:1",
+              "quote": "Zone ID: ZONE-X",
+              "source_id": "permit_0051.pdf"
+            }
+          ],
+          "rule_id": "R-ZONE-01",
+          "severity": "P1",
+          "type": "unauthorized_work_zone"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0052",
+      "critical": true,
+      "permit_dir": "permit_0052",
+      "permit_id": "PERMIT-052",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "page:1",
+              "quote": "Concurrent work zones: ZONE-A",
+              "source_id": "permit_0052.pdf"
+            }
+          ],
+          "rule_id": "R-SIMOPS-01",
+          "severity": "P1",
+          "type": "simultaneous_operations_conflict"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0053",
+      "critical": true,
+      "permit_dir": "permit_0053",
+      "permit_id": "PERMIT-053",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "page:1",
+              "quote": "Concurrent work zones: ZONE-A",
+              "source_id": "permit_0053.pdf"
+            }
+          ],
+          "rule_id": "R-SIMOPS-01",
+          "severity": "P1",
+          "type": "simultaneous_operations_conflict"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0054",
+      "critical": true,
+      "permit_dir": "permit_0054",
+      "permit_id": "PERMIT-054",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "page:1",
+              "quote": "Concurrent work zones: ZONE-A",
+              "source_id": "permit_0054.pdf"
+            }
+          ],
+          "rule_id": "R-SIMOPS-01",
+          "severity": "P1",
+          "type": "simultaneous_operations_conflict"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0055",
+      "critical": true,
+      "permit_dir": "permit_0055",
+      "permit_id": "PERMIT-055",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "row:6",
+              "quote": "2026-09-25T06:25:00Z",
+              "source_id": "employee_card.json"
+            }
+          ],
+          "rule_id": "R-EMP-01",
+          "severity": "P1",
+          "type": "expired_employee_clearance"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0056",
+      "critical": true,
+      "permit_dir": "permit_0056",
+      "permit_id": "PERMIT-056",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "row:6",
+              "quote": "2026-09-26T06:20:00Z",
+              "source_id": "employee_card.json"
+            }
+          ],
+          "rule_id": "R-EMP-01",
+          "severity": "P1",
+          "type": "expired_employee_clearance"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0057",
+      "critical": true,
+      "permit_dir": "permit_0057",
+      "permit_id": "PERMIT-057",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "row:6",
+              "quote": "2026-09-27T06:15:00Z",
+              "source_id": "employee_card.json"
+            }
+          ],
+          "rule_id": "R-EMP-01",
+          "severity": "P1",
+          "type": "expired_employee_clearance"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0058",
+      "critical": true,
+      "permit_dir": "permit_0058",
+      "permit_id": "PERMIT-058",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "row:2",
+              "quote": "PENDING",
+              "source_id": "isolations.csv"
+            }
+          ],
+          "rule_id": "R-LOTO-01",
+          "severity": "P1",
+          "type": "unconfirmed_isolation"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0059",
+      "critical": true,
+      "permit_dir": "permit_0059",
+      "permit_id": "PERMIT-059",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "row:2",
+              "quote": "PENDING",
+              "source_id": "isolations.csv"
+            }
+          ],
+          "rule_id": "R-LOTO-01",
+          "severity": "P1",
+          "type": "unconfirmed_isolation"
+        }
+      ]
+    },
+    {
+      "case_id": "permit_0060",
+      "critical": true,
+      "permit_dir": "permit_0060",
+      "permit_id": "PERMIT-060",
+      "violations": [
+        {
+          "prooflinks": [
+            {
+              "location": "row:2",
+              "quote": "PENDING",
+              "source_id": "isolations.csv"
+            }
+          ],
+          "rule_id": "R-LOTO-01",
+          "severity": "P1",
+          "type": "unconfirmed_isolation"
+        }
+      ]
+    }
+  ],
+  "distribution": {
+    "by_rule": {
+      "R-EMP-01": 3,
+      "R-GAS-01": 4,
+      "R-LOTO-01": 3,
+      "R-SIG-01": 4,
+      "R-SIMOPS-01": 3,
+      "R-ZONE-01": 3
+    },
+    "clean": 40,
+    "trap": 20
+  },
+  "seed": 20260920,
+  "version": 1
+}

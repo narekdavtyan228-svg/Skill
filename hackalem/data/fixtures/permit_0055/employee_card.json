@@ -1,0 +1,9 @@
+{
+  "allowed_zones": [
+    "ZONE-A",
+    "ZONE-B"
+  ],
+  "clearance_valid_until": "2026-09-25T06:25:00Z",
+  "employee_id": "EMP-EXPIRED-0055",
+  "permit_id": "PERMIT-055"
+}

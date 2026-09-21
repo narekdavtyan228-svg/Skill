@@ -1,0 +1,2 @@
+"""Synthetic PermitGuard dataset generation."""
+
