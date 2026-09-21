@@ -82,3 +82,25 @@ def test_conflicting_employee_ids_are_not_guessed(workspace) -> None:
     assert permit.employee_id.value is None
     assert permit.employee_id.status == "insufficient_evidence"
     assert any("Employee ID conflicts" in item for item in permit.contradictions)
+
+
+@pytest.mark.parametrize("payload", ["[]", "null", "42"])
+def test_non_object_employee_card_fails_closed(workspace, payload) -> None:
+    from core.orchestrator import run
+
+    case_dir = _write_spec(workspace, build_case_specs()[0])
+    (case_dir / "employee_card.json").write_text(payload, encoding="utf-8")
+    result = run(case_dir)
+    assert result.verdict == "block_and_escalate"
+    assert result.unknowns
+
+
+def test_duplicate_csv_header_is_not_silently_accepted(workspace) -> None:
+    case_dir = _write_spec(workspace, build_case_specs()[0])
+    (case_dir / "gas_log.csv").write_text(
+        "permit_id,tested_at,valid_minutes,valid_minutes\n"
+        "PERMIT-001,2026-09-20T06:00:00Z,0,30\n", encoding="utf-8",
+    )
+    permit = extract_permit(case_dir)
+    assert permit.gas_valid_minutes.value is None
+    assert any("duplicate CSV columns" in item for item in permit.contradictions)

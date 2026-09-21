@@ -96,6 +96,8 @@ def _pdf_value(
         return _unknown()
     raw, proof = item
     try:
+        if not raw.strip():
+            raise ValueError("field must not be blank")
         return EvidenceValue[ValueT](value=parser(raw), status="confirmed", prooflinks=[proof])
     except (TypeError, ValueError, OverflowError) as exc:
         contradictions.append(f"Invalid PDF field {label}: {exc}")
@@ -119,6 +121,11 @@ def _read_employee(
         return _unknown()
     try:
         payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        if not isinstance(payload, dict):
+            raise ValueError("employee card must be a JSON object")
+        if pdf_employee.value is None:
+            contradictions.append("Employee ID is missing from permit PDF")
+            return _unknown()
         employee = payload.get("employee_id")
         row = _json_line(path, "employee_id")
         if not isinstance(employee, str) or not employee.strip() or row is None:
@@ -139,7 +146,15 @@ def _read_csv_rows(path: Path, contradictions: list[str]) -> list[tuple[int, dic
     try:
         lines = path.read_text(encoding="utf-8-sig").splitlines()
         with path.open("r", encoding="utf-8-sig", newline="") as stream:
-            rows = list(csv.DictReader(stream))
+            reader = csv.DictReader(stream)
+            headers = reader.fieldnames or []
+            if not headers or len(set(headers)) != len(headers):
+                contradictions.append(f"Missing or duplicate CSV columns in {path.name}")
+                return []
+            rows = list(reader)
+        if any(None in row or None in row.values() for row in rows):
+            contradictions.append(f"Malformed CSV columns in {path.name}")
+            return []
     except (OSError, UnicodeError, csv.Error) as exc:
         contradictions.append(f"Unreadable CSV {path.name}: {exc}")
         return []
