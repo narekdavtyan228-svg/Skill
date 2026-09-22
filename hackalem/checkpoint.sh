@@ -117,6 +117,7 @@ report() {
     [ -f Makefile ] && grep -q '^smoke:' Makefile && gate "make smoke   (сквозной прогон)" "make smoke" || echo "  [$(c_yel 'н/д')]  цели smoke в Makefile ещё нет"
     [ -f eval/run.py ] && gate "python -m eval.run (метрики)" "python -m eval.run" || echo "  [$(c_yel 'н/д')]  eval/run.py ещё нет"
     [ -d tests ] || ls test_*.py >/dev/null 2>&1 && gate "pytest -q" "pytest -q" || echo "  [$(c_yel 'н/д')]  тестов ещё нет"
+    [ -f ui/visual_qa.py ] && gate "make ui-qa (браузерная проверка)" "make ui-qa" || echo "  [$(c_yel 'н/д')]  браузерной проверки UI ещё нет"
   fi
   if [ "$QUICK" != 1 ] && [ -f eval/run.py ]; then
     echo "  Последние метрики:"

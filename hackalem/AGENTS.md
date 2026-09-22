@@ -111,10 +111,14 @@ Python 3.11 · Pydantic v2 · OpenAI SDK (structured outputs + vision) · Stream
 Задача не закрыта, пока не выполнено всё:
 
 ```bash
+python verify.py     # кросс-платформенный запуск всех ворот одной командой
 make smoke          # сквозной прогон на одном комплекте, без исключений
 make eval           # печатает метрики
 make test           # pytest зелёный
+make ui-qa          # браузерная проверка UI на 375/768/1024/1440 px и сравнение с эталоном
 ```
+
+Если изменены `ui/`, стили или пользовательский сценарий, `make ui-qa` обязателен. Проверка должна подтвердить отсутствие ошибок консоли, горизонтального переполнения и проблем с клавиатурным доступом; визуальный результат сравнивается с эталонными скриншотами из `ui/tests/baselines/`.
 
 Цели уже описаны в `Makefile`; трогать его может только роль A. Быстрый срез состояния всей команды: `./checkpoint.sh --quick`.
 
@@ -131,7 +135,7 @@ make test           # pytest зелёный
 3. Работай тонкими вертикальными срезами: сначала сквозной путь на одном комплекте документов, потом качество и охват. Никогда «сначала все модели, потом все правила».
 4. После каждого среза: `$verification-loop`, затем коммит и пуш.
 5. Полезные скиллы ECC: `$contract-first`, `$api-design`, `$python-patterns`, `$regex-vs-llm-structured-text`, `$eval-harness`, `$verification-loop`, `$orch-fix-defect`, `$frontend-patterns`, `$frontend-slides`, `$safety-guard`.
-6. Внешние скиллы вендорены в `.agents/skills/`. Перед работой над UI прочитай `.agents/skills/ui-ux-pro-max/SKILL.md`; перед разбором PDF — `.agents/skills/anydoc/SKILL.md`.
+6. Внешние скиллы вендорены в `.agents/skills/`. Перед работой над UI прочитай `.agents/skills/ui-ux-pro-max/SKILL.md`, зафиксируй решения в `design-system/` и после правок выполни `make ui-qa`; перед разбором PDF — `.agents/skills/anydoc/SKILL.md`.
 
 ---
 
